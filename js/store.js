@@ -15,28 +15,49 @@ function defaultDayRecord(dateString) {
       morning: null,
       evening: null,
     },
-    bloodPressure: null,   // { morning: {systolic,diastolic,pulse}|null, evening: ... }|null
+    bloodPressure: null,   // { morning: {first,second}|null, evening: ... }|null
     hospitalVisit: null,
+    salt: {               // 摂取塩分量 (g, 小数点あり)
+      breakfast: null,
+      lunch: null,
+      dinner: null,
+    },
   };
 }
 
 /**
- * 旧形式の bloodPressure（フラットな {systolic,diastolic,pulse}）を
- * 新形式（{morning,evening} の入れ子）にマイグレーションする
+ * bloodPressure を最新形式（{morning/evening: {first,second}}）にマイグレーションする
+ * 旧旧形式: フラット { systolic, diastolic, pulse }
+ * 旧形式:   { morning: { systolic, diastolic, pulse }, evening: ... }
+ * 新形式:   { morning: { first: {...}, second: {...} }, evening: ... }
  */
 function migrateBp(bp) {
   if (!bp) return null;
-  // 新形式はそのまま返す
-  if ('morning' in bp || 'evening' in bp) return bp;
-  // 旧形式 → 朝のデータとして移行
-  return {
-    morning: {
-      systolic: bp.systolic ?? null,
-      diastolic: bp.diastolic ?? null,
-      pulse: bp.pulse ?? null,
-    },
-    evening: null,
+
+  // 既に新形式（first/second キーを持つ）ならそのまま返す
+  const hasMeasureKeys = (slot) => slot && ('first' in slot || 'second' in slot);
+  if (hasMeasureKeys(bp.morning) || hasMeasureKeys(bp.evening)) return bp;
+
+  // 旧旧形式: フラット { systolic, diastolic, pulse }
+  if ('systolic' in bp || 'diastolic' in bp || 'pulse' in bp) {
+    return {
+      morning: {
+        first: { systolic: bp.systolic ?? null, diastolic: bp.diastolic ?? null, pulse: bp.pulse ?? null },
+        second: null,
+      },
+      evening: null,
+    };
+  }
+
+  // 旧形式: morning/evening はあるがフラット { systolic, diastolic, pulse }
+  const wrap = (slot) => {
+    if (!slot) return null;
+    return {
+      first: { systolic: slot.systolic ?? null, diastolic: slot.diastolic ?? null, pulse: slot.pulse ?? null },
+      second: null,
+    };
   };
+  return { morning: wrap(bp.morning), evening: wrap(bp.evening) };
 }
 
 /**
@@ -69,6 +90,7 @@ export const store = {
         ...parsed,
         medications: { morning: null, evening: null, ...(parsed.medications || {}) },
         bloodPressure: migrateBp(parsed.bloodPressure),
+        salt: { breakfast: null, lunch: null, dinner: null, ...(parsed.salt || {}) },
       };
     } catch {
       return defaultDayRecord(dateString);

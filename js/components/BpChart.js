@@ -35,10 +35,10 @@ export default {
 
   computed: {
     hasData() {
-      return this.records.some(r =>
-        r.bloodPressure?.morning !== null && r.bloodPressure?.morning !== undefined ||
-        r.bloodPressure?.evening !== null && r.bloodPressure?.evening !== undefined
-      );
+      return this.records.some(r => {
+        const bp = r.bloodPressure;
+        return bp?.morning?.first || bp?.morning?.second || bp?.evening?.first || bp?.evening?.second;
+      });
     },
 
     labels() {
@@ -55,7 +55,7 @@ export default {
       if (this.filters.showMorningBp && this.filters.showSystolic) {
         datasets.push({
           label: '朝 収縮期（上）',
-          data: this.records.map(r => r.bloodPressure?.morning?.systolic ?? null),
+          data: this.records.map(r => this.avgBp(r, 'morning', 'systolic')),
           borderColor: '#e74c3c',
           backgroundColor: 'rgba(231,76,60,0.08)',
           pointBackgroundColor: '#e74c3c',
@@ -71,7 +71,7 @@ export default {
       if (this.filters.showEveningBp && this.filters.showSystolic) {
         datasets.push({
           label: '夜 収縮期（上）',
-          data: this.records.map(r => r.bloodPressure?.evening?.systolic ?? null),
+          data: this.records.map(r => this.avgBp(r, 'evening', 'systolic')),
           borderColor: '#e74c3c',
           backgroundColor: 'rgba(231,76,60,0.04)',
           pointBackgroundColor: '#e74c3c',
@@ -89,7 +89,7 @@ export default {
       if (this.filters.showMorningBp && this.filters.showDiastolic) {
         datasets.push({
           label: '朝 拡張期（下）',
-          data: this.records.map(r => r.bloodPressure?.morning?.diastolic ?? null),
+          data: this.records.map(r => this.avgBp(r, 'morning', 'diastolic')),
           borderColor: '#3498db',
           backgroundColor: 'rgba(52,152,219,0.08)',
           pointBackgroundColor: '#3498db',
@@ -105,7 +105,7 @@ export default {
       if (this.filters.showEveningBp && this.filters.showDiastolic) {
         datasets.push({
           label: '夜 拡張期（下）',
-          data: this.records.map(r => r.bloodPressure?.evening?.diastolic ?? null),
+          data: this.records.map(r => this.avgBp(r, 'evening', 'diastolic')),
           borderColor: '#3498db',
           backgroundColor: 'rgba(52,152,219,0.04)',
           pointBackgroundColor: '#3498db',
@@ -123,7 +123,7 @@ export default {
       if (this.filters.showMorningBp && this.filters.showPulse) {
         datasets.push({
           label: '朝 脈拍',
-          data: this.records.map(r => r.bloodPressure?.morning?.pulse ?? null),
+          data: this.records.map(r => this.avgBp(r, 'morning', 'pulse')),
           borderColor: '#27ae60',
           backgroundColor: 'rgba(39,174,96,0.08)',
           pointBackgroundColor: '#27ae60',
@@ -140,7 +140,7 @@ export default {
       if (this.filters.showEveningBp && this.filters.showPulse) {
         datasets.push({
           label: '夜 脈拍',
-          data: this.records.map(r => r.bloodPressure?.evening?.pulse ?? null),
+          data: this.records.map(r => this.avgBp(r, 'evening', 'pulse')),
           borderColor: '#27ae60',
           backgroundColor: 'rgba(39,174,96,0.04)',
           pointBackgroundColor: '#27ae60',
@@ -240,10 +240,24 @@ export default {
     getMaxY() {
       let max = 200;
       for (const r of this.records) {
-        if (r.bloodPressure?.morning?.systolic) max = Math.max(max, r.bloodPressure.morning.systolic + 20);
-        if (r.bloodPressure?.evening?.systolic) max = Math.max(max, r.bloodPressure.evening.systolic + 20);
+        for (const tod of ['morning', 'evening']) {
+          for (const mn of ['first', 'second']) {
+            const v = r.bloodPressure?.[tod]?.[mn]?.systolic;
+            if (v) max = Math.max(max, v + 20);
+          }
+        }
       }
       return max;
+    },
+
+    // 1回目・2回目の平均値を返す（片方のみの場合はその値、両方nullならnull）
+    avgBp(r, timeOfDay, field) {
+      const slot = r.bloodPressure?.[timeOfDay];
+      if (!slot) return null;
+      const v1 = slot.first?.[field] ?? null;
+      const v2 = slot.second?.[field] ?? null;
+      if (v1 !== null && v2 !== null) return Math.round((v1 + v2) / 2);
+      return v1 ?? v2;
     },
 
     createChart() {

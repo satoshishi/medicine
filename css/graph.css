@@ -32,6 +32,7 @@
 .filter-chip.diastolic.active  { background: #3498db; border-color: #3498db; }
 .filter-chip.pulse.active      { background: #27ae60; border-color: #27ae60; }
 .filter-chip.hospital.active   { background: var(--color-hospital); border-color: var(--color-hospital); }
+.filter-chip.salt.active       { background: #9b59b6; border-color: #9b59b6; }
 
 /* グラフカード */
 .chart-card {

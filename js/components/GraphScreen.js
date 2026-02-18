@@ -1,13 +1,14 @@
 // GraphScreen.js - グラフ画面
 
 import BpChart from './BpChart.js';
+import SaltChart from './SaltChart.js';
 import { formatMonthJa, prevMonth, nextMonth, today, buildCalendarGrid } from '../utils.js';
 import { store } from '../store.js';
 
 export default {
   name: 'GraphScreen',
 
-  components: { BpChart },
+  components: { BpChart, SaltChart },
 
   data() {
     const now = new Date();
@@ -22,6 +23,7 @@ export default {
         showDiastolic: true,
         showPulse: true,
         showHospital: true,
+        showSalt: true,
       },
     };
   },
@@ -168,6 +170,10 @@ export default {
           :class="['filter-chip', 'hospital', { active: filters.showHospital }]"
           @click="toggleFilter('showHospital')"
         >通院日</button>
+        <button
+          :class="['filter-chip', 'salt', { active: filters.showSalt }]"
+          @click="toggleFilter('showSalt')"
+        >🧂 塩分</button>
       </div>
 
       <!-- 血圧グラフ -->
@@ -175,6 +181,16 @@ export default {
         <div class="chart-title">血圧・脈拍</div>
         <BpChart
           :key="year + '-' + month"
+          :records="records"
+          :filters="filters"
+        />
+      </div>
+
+      <!-- 塩分グラフ -->
+      <div class="chart-card" v-if="filters.showSalt">
+        <div class="chart-title">摂取塩分量（1日合計）</div>
+        <SaltChart
+          :key="'salt-' + year + '-' + month"
           :records="records"
           :filters="filters"
         />

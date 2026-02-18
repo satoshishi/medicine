@@ -143,6 +143,23 @@
   gap: 4px;
 }
 
+/* 血圧 1回目・2回目ラベル */
+.bp-measure-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin: var(--spacing-xs) 0 2px;
+  padding-left: 2px;
+}
+
+/* 塩分合計表示行 */
+.salt-total-row {
+  margin-top: var(--spacing-sm);
+  text-align: right;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
 /* 血圧入力 */
 .bp-input-grid {
   display: grid;
