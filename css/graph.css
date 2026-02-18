@@ -1,0 +1,195 @@
+/* graph.css - グラフ画面レイアウト */
+
+.graph-screen {
+  padding: var(--spacing-sm);
+}
+
+/* フィルタートグルバー */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-xs);
+  margin-bottom: var(--spacing-md);
+}
+
+.filter-chip {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border: 2px solid var(--color-border);
+  background: var(--color-bg-card);
+  color: var(--color-text-secondary);
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  cursor: pointer;
+}
+
+.filter-chip.active {
+  color: var(--color-bg-card);
+}
+
+.filter-chip.systolic.active   { background: #e74c3c; border-color: #e74c3c; }
+.filter-chip.diastolic.active  { background: #3498db; border-color: #3498db; }
+.filter-chip.pulse.active      { background: #27ae60; border-color: #27ae60; }
+.filter-chip.hospital.active   { background: var(--color-hospital); border-color: var(--color-hospital); }
+
+/* グラフカード */
+.chart-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.chart-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.chart-canvas-wrapper {
+  position: relative;
+  height: 220px;
+}
+
+/* データなしメッセージ */
+.no-data-msg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100px;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  font-style: italic;
+}
+
+/* 服薬ヒートマップ */
+.heatmap-title {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.heatmap-weekday {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding-bottom: 2px;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 3px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heatmap-cell.empty {
+  background: transparent;
+}
+
+.heatmap-cell.no-data {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+}
+
+.heatmap-cell.both-taken {
+  background: var(--color-taken);
+}
+
+.heatmap-cell.one-taken {
+  background: #f39c12;
+}
+
+.heatmap-cell.none-taken {
+  background: var(--color-missed);
+}
+
+.heatmap-cell.future {
+  background: var(--color-bg);
+  border: 1px dashed var(--color-border);
+}
+
+.heatmap-day-num {
+  font-size: 9px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.9);
+  line-height: 1;
+}
+
+.heatmap-cell.no-data .heatmap-day-num,
+.heatmap-cell.future .heatmap-day-num {
+  color: var(--color-text-muted);
+}
+
+.heatmap-hospital-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 7px;
+  line-height: 1;
+}
+
+/* 凡例 */
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.legend-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* 統計サマリー */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.stat-card {
+  background: var(--color-bg-card);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  box-shadow: var(--shadow-sm);
+  text-align: center;
+}
+
+.stat-value {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+}

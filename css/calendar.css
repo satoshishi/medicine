@@ -1,0 +1,123 @@
+/* calendar.css - カレンダーグリッド、バッジ */
+
+.calendar-screen {
+  padding: var(--spacing-sm);
+}
+
+/* 曜日ヘッダー */
+.weekday-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: var(--spacing-xs);
+}
+
+.weekday-label {
+  text-align: center;
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  padding: var(--spacing-xs) 0;
+}
+
+.weekday-label.sunday { color: #e74c3c; }
+.weekday-label.saturday { color: #3498db; }
+
+/* カレンダーグリッド */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+/* 日付セル */
+.day-cell {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px 2px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.12s;
+  position: relative;
+  min-height: 52px;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+}
+
+.day-cell:active {
+  background: var(--color-bg);
+  transform: scale(0.97);
+}
+
+.day-cell.other-month {
+  opacity: 0.3;
+  background: transparent;
+  border-color: transparent;
+}
+
+.day-cell.today {
+  border-color: var(--color-primary);
+  background: #edf4fb;
+}
+
+.day-cell.today .day-number {
+  color: var(--color-primary);
+  font-weight: 700;
+}
+
+/* 日付番号 */
+.day-number {
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.day-cell.sunday .day-number { color: #e74c3c; }
+.day-cell.saturday .day-number { color: #3498db; }
+.day-cell.other-month .day-number { color: var(--color-text-muted); }
+
+/* 服薬ドット */
+.med-dots {
+  display: flex;
+  gap: 3px;
+  align-items: center;
+  justify-content: center;
+}
+
+.med-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.med-dot.taken    { background: var(--color-taken); }
+.med-dot.missed   { background: var(--color-missed); }
+.med-dot.unrecorded { background: var(--color-unrecorded); }
+.med-dot.future   { background: var(--color-future); }
+.med-dot.none     { background: transparent; border: 1px solid var(--color-border); }
+
+/* 通院バッジ */
+.hospital-badge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* 今日の"今日"ラベル */
+.today-indicator {
+  position: absolute;
+  bottom: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--color-primary);
+}

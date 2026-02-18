@@ -1,0 +1,319 @@
+/* modal.css - 日付詳細モーダル（ボトムシート） */
+
+/* オーバーレイ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* ボトムシート本体 */
+.modal-sheet {
+  width: 100%;
+  max-width: 480px;
+  background: var(--color-bg-card);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: var(--spacing-md) var(--spacing-md) calc(var(--spacing-xl) + env(safe-area-inset-bottom));
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+/* ドラッグハンドル */
+.sheet-handle {
+  width: 36px;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 2px;
+  margin: 0 auto var(--spacing-md);
+}
+
+/* モーダルヘッダー */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal-date-title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-text-primary);
+}
+
+.modal-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--color-text-muted);
+  background: var(--color-bg);
+}
+
+.modal-close-btn:active {
+  background: var(--color-border);
+}
+
+/* セクション */
+.modal-section {
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal-section-title {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-sm);
+}
+
+/* 服薬トグルボタン */
+.med-toggle-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.med-toggle-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 2px solid var(--color-border);
+  background: var(--color-bg);
+  min-height: 60px;
+  transition: border-color 0.15s, background 0.15s;
+  width: 100%;
+  text-align: left;
+}
+
+.med-toggle-btn.taken {
+  border-color: var(--color-taken);
+  background: #eafaf1;
+}
+
+.med-toggle-btn.missed {
+  border-color: var(--color-missed);
+  background: #fdf0ee;
+}
+
+.med-toggle-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.med-toggle-name {
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.med-toggle-status {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.med-toggle-btn.taken .med-toggle-status { color: var(--color-taken); }
+.med-toggle-btn.missed .med-toggle-status { color: var(--color-missed); }
+
+.med-toggle-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+/* 血圧 朝・夜ラベル */
+.bp-time-label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin: var(--spacing-sm) 0 var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 血圧入力 */
+.bp-input-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--spacing-sm);
+}
+
+.bp-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.bp-input-label {
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  text-align: center;
+}
+
+.bp-input-field {
+  width: 100%;
+  height: 52px;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  text-align: center;
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--color-text-primary);
+  background: var(--color-bg);
+  transition: border-color 0.15s;
+  padding: 0;
+}
+
+.bp-input-field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  background: #fff;
+}
+
+.bp-input-unit {
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* 通院セクション */
+.hospital-toggle-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-sm);
+}
+
+.hospital-toggle-label {
+  font-size: var(--font-size-md);
+  font-weight: 500;
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+/* トグルスイッチ */
+.toggle-switch {
+  position: relative;
+  width: 48px;
+  height: 28px;
+}
+
+.toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+.toggle-slider {
+  position: absolute;
+  inset: 0;
+  background: var(--color-border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.toggle-slider::before {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-switch input:checked + .toggle-slider {
+  background: var(--color-hospital);
+}
+
+.toggle-switch input:checked + .toggle-slider::before {
+  transform: translateX(20px);
+}
+
+.hospital-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm);
+  background: var(--color-hospital-bg);
+  border-radius: var(--radius-sm);
+  border: 1px solid #f5c6c6;
+}
+
+.hospital-time-row {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.hospital-time-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+}
+
+.hospital-time-input {
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--spacing-sm);
+  background: white;
+  color: var(--color-text-primary);
+  flex: 1;
+}
+
+.hospital-note-input {
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--spacing-sm);
+  background: white;
+  color: var(--color-text-primary);
+  width: 100%;
+  font-size: var(--font-size-md);
+}
+
+.hospital-note-input:focus,
+.hospital-time-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+/* トランジション（Vue） */
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: opacity 0.25s ease;
+}
+
+.slide-up-enter-active .modal-sheet,
+.slide-up-leave-active .modal-sheet {
+  transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+}
+
+.slide-up-enter-from .modal-sheet,
+.slide-up-leave-to .modal-sheet {
+  transform: translateY(100%);
+}
